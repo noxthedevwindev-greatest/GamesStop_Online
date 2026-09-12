@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 70%);
+}
+
+.disguise-badge {
+  background: #1e293b;
+  border: 1px solid #334155;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+.hero h1 span {
+  color: #3b82f6;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 2.5rem;
+}
+
+.code-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.code-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.code-input input {
+  width: 58px;
+  height: 68px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 10px;
+  color: #e2e8f0;
+  transition: all 0.3s;
+}
+
+.code-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  transform: scale(1.05);
+}
+
+.enter-btn {
+  padding: 0.9rem 3.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.enter-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.error-msg {
+  color: #ef4444;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  min-height: 1.5rem;
+}
+
+.subjects {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.subjects span {
+  background: #1e293b;
+  border: 1px solid #334155;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+}

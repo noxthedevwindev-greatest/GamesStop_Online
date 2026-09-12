@@ -1,0 +1,217 @@
+/* Profile Page Styles */
+.profile-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  border: 3px solid #1e293b;
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-info .code-badge {
+  display: inline-block;
+  background: #3b82f6;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.profile-info .member-since {
+  color: #64748b;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.games-library {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #1e293b;
+}
+
+.games-library h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.my-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.game-item {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid #334155;
+  transition: all 0.3s;
+}
+
+.game-item:hover {
+  border-color: #3b82f6;
+  transform: translateY(-3px);
+}
+
+.game-item h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.game-item .added-date {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.no-games {
+  color: #64748b;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.7rem 2rem;
+  background: #1e293b;
+  color: #e2e8f0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s;
+  border: 1px solid #334155;
+}
+
+.back-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.not-found {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.not-found h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.not-found p {
+  color: #64748b;
+}
+
+.settings-panel {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #1e293b;
+  margin-top: 1.5rem;
+}
+
+.settings-panel h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-row span {
+  color: #cbd5e1;
+  font-size: 1rem;
+}
+
+.setting-row code {
+  background: #1e293b;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.toggle-btn, .update-ip-btn, .save-btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-btn {
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+}
+
+.toggle-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.update-ip-btn {
+  background: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.update-ip-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.save-btn {
+  background: #22c55e;
+  color: #fff;
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+}
+
+.save-btn:hover {
+  background: #16a34a;
+}
