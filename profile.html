@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyHub - Profile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0a0a0f; color: #fff; min-height: 100vh; overflow-x: hidden;
+    }
+    .bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.06) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 50%, rgba(139,92,246,0.06) 0%, transparent 50%);
+      z-index: 0;
+    }
+    .nav {
+      position: relative; z-index: 1; padding: 1.2rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05); animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+    .nav a { color: #3b82f6; text-decoration: none; font-size: 0.9rem; }
+    .nav a:hover { color: #8b5cf6; }
+    .container { position: relative; z-index: 1; max-width: 750px; margin: 2rem auto; padding: 0 1.5rem; }
+    .header {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 2rem;
+      border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem; animation: fadeInUp 0.6s ease;
+    }
+    .avatar {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: bold; animation: bounceIn 0.8s ease; flex-shrink: 0;
+    }
+    .info h2 { margin: 0 0 0.4rem; font-size: 1.5rem; animation: slideInLeft 0.5s ease 0.2s both; }
+    .info .code { color: #3b82f6; font-size: 0.85rem; font-weight: 600; letter-spacing: 3px; animation: slideInLeft 0.5s ease 0.3s both; }
+    .info .date { color: #555; font-size: 0.8rem; margin-top: 0.4rem; animation: slideInLeft 0.5s ease 0.4s both; }
+    .section {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 1.5rem;
+      border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease 0.2s both;
+    }
+    .section h3 { margin: 0 0 1.2rem; font-size: 1rem; color: #3b82f6; }
+    .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    .game {
+      background: rgba(255,255,255,0.03); border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s ease;
+      animation: fadeInUp 0.5s ease calc(0.1s * var(--i)) both;
+    }
+    .game:hover { transform: translateY(-5px); border-color: rgba(59,130,246,0.3); box-shadow: 0 10px 30px rgba(59,130,246,0.15); }
+    .game-img { width: 100%; height: 110px; background-size: cover; background-position: center; background-color: #111; }
+    .game:hover .game-img { transform: scale(1.05); }
+    .game-body { padding: 0.8rem; }
+    .game h4 { margin: 0 0 0.2rem; font-size: 0.85rem; color: #fff; }
+    .game .desc { font-size: 0.7rem; color: #555; margin-bottom: 0.4rem; }
+    .game .unowned { color: #ef4444; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .no-games { text-align: center; padding: 2rem; color: #555; animation: fadeIn 0.5s ease; }
+    .no-games p { margin-bottom: 0.5rem; }
+    .no-games small { font-size: 0.8rem; color: #444; }
+    .settings { animation-delay: 0.3s; }
+    .setting-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;
+      animation: slideInLeft 0.4s ease calc(0.1s * var(--i)) both;
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-row span { color: #999; }
+    .setting-row code { background: rgba(255,255,255,0.05); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; color: #666; }
+    .setting-row button {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      color: #fff; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer;
+      font-size: 0.8rem; transition: all 0.3s ease;
+    }
+    .setting-row button:hover { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.3); }
+    .save-btn {
+      width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff;
+      border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer;
+      font-size: 0.9rem; font-weight: 600; margin-top: 1rem; transition: all 0.3s ease;
+    }
+    .save-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(34,197,94,0.3); }
+    .setup-card {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 2.5rem;
+      border-radius: 20px; border: 1px solid rgba(255,255,255,0.06); animation: scaleIn 0.5s ease;
+    }
+    .setup-card h2 {
+      font-size: 1.8rem; margin-bottom: 0.3rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: fadeInUp 0.5s ease 0.1s both;
+    }
+    .setup-card .sub { color: #555; font-size: 0.9rem; margin-bottom: 2rem; animation: fadeInUp 0.5s ease 0.2s both; }
+    .form-group { margin-bottom: 1.2rem; animation: fadeInUp 0.5s ease calc(0.1s * var(--i)) both; }
+    .form-group label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 1px; }
+    .form-group input {
+      width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff;
+      font-size: 0.95rem; transition: all 0.3s ease;
+    }
+    .form-group input:focus { outline: none; border-color: #3b82f6; background: rgba(59,130,246,0.08); box-shadow: 0 0 20px rgba(59,130,246,0.15); transform: translateY(-2px); }
+    .form-group input::placeholder { color: #444; }
+    .submit-btn {
+      width: 100%; padding: 1rem; background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; margin-top: 1.5rem; transition: all 0.3s ease;
+      animation: fadeInUp 0.5s ease 0.7s both; text-transform: uppercase; letter-spacing: 2px;
+    }
+    .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(59,130,246,0.4); }
+    .error-page { text-align: center; padding: 4rem 2rem; background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); animation: scaleIn 0.5s ease; }
+    .error-page h2 { margin-bottom: 0.5rem; }
+    .error-page p { color: #555; }
+    .back { display: inline-block; margin-top: 1.5rem; color: #3b82f6; text-decoration: none; padding: 0.6rem 1.5rem; border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; transition: all 0.3s ease; }
+    .back:hover { background: rgba(59,130,246,0.1); }
+    footer { position: relative; z-index: 1; text-align: center; color: #333; font-size: 0.75rem; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="nav"><a href="/GamesStop_Online/">Home</a></div>
+  <div class="container" id="root">
+    <div class="error-page" id="notFound" style="display:none;">
+      <h2>Not Found</h2>
+      <p>No profile matches this code.</p>
+      <a class="back" href="/GamesStop_Online/">Go back</a>
+    </div>
+  </div>
+  <footer>&copy; 2026 StudyHub</footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const root = document.getElementById('root');
+    const nf = document.getElementById('notFound');
+
+    const DB_KEY = 'studyhub_profiles';
+
+    function getProfiles() {
+      try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; }
+      catch { return {}; }
+    }
+
+    function saveProfiles(profiles) {
+      localStorage.setItem(DB_KEY, JSON.stringify(profiles));
+    }
+
+    function getProfile(code) {
+      const profiles = getProfiles();
+      return profiles[code] || null;
+    }
+
+    function saveProfile(code, profile) {
+      const profiles = getProfiles();
+      profiles[code] = profile;
+      saveProfiles(profiles);
+    }
+
+    const gameImages = {
+      'gta': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'grand theft auto': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'fortnite': 'https://images.unsplash.com/photo-1552820728-8b83bb6b2b28?w=400&h=300&fit=crop',
+      'minecraft': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+      'valorant': 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop',
+      'call of duty': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'cod': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'warzone': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'cyberpunk': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'red dead': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'rdr2': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'assassin': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+      'creed': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+      'elden ring': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'dark souls': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'sekiro': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'apex': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'legends': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'counter-strike': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'csgo': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'cs2': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'dota': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'team fortress': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'tf2': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'half-life': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'left 4 dead': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'l4d': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'portal': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'skyrim': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'fallout': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'the witcher': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'witcher': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'borderlands': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'terraria': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+      'valheim': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'rust': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'pubg': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'rainbow': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'siege': 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&h=300&fit=crop',
+      'overwatch': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'destiny': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'league': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'rocket league': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'among us': 'https://images.unsplash.com/photo-1552820728-8b83bb6b2b28?w=400&h=300&fit=crop',
+      'fall guys': 'https://images.unsplash.com/photo-1552820728-8b83bb6b2b28?w=400&h=300&fit=crop',
+      'phasmophobia': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'lethal company': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'gmod': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'garry': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'roblox': 'https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?w=400&h=300&fit=crop',
+      'nba 2k': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=300&fit=crop',
+      'tekken': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'street fighter': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'mortal kombat': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'need for speed': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'nfs': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'forza': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'far cry': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'watch dogs': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'hogwarts': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'diablo': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'genshin': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'palworld': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+      'helldivers': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'silent hill': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'resident evil': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'dead by daylight': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'dbd': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'outlast': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=300&fit=crop',
+      'star wars': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'jedi': 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=400&h=300&fit=crop',
+      'battlefield': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'doom': 'https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop',
+      'sifu': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
+      'default': 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=400&h=300&fit=crop'
+    };
+
+    const gameDescs = {
+      'gta': 'Open-world action adventure', 'fortnite': 'Battle Royale & creative sandbox',
+      'minecraft': 'Sandbox survival & creativity', 'valorant': 'Tactical 5v5 FPS shooter',
+      'cod': 'Military FPS multiplayer', 'warzone': 'Free-to-play battle royale',
+      'cyberpunk': 'Open-world RPG in Night City', 'red dead': 'Open-world Wild West adventure',
+      'rdr2': 'Open-world Wild West adventure', 'elden ring': 'Hardcore action RPG',
+      'dark souls': 'Challenging action RPG', 'sekiro': 'Skill-based action adventure',
+      'apex': 'Fast-paced battle royale FPS', 'cs2': 'Competitive tactical FPS',
+      'csgo': 'Competitive tactical FPS', 'dota': 'Multiplayer online battle arena',
+      'skyrim': 'Open-world fantasy RPG', 'fallout': 'Post-apocalyptic open-world RPG',
+      'the witcher': 'Epic fantasy RPG', 'borderlands': 'Looter shooter FPS RPG',
+      'terraria': '2D sandbox adventure', 'valheim': 'Viking survival adventure',
+      'rust': 'Multiplayer survival game', 'phasmophobia': 'Co-op horror ghost hunting',
+      'lethal company': 'Co-op horror looter', 'portal': 'First-person puzzle game',
+      'half-life': 'Sci-fi FPS adventure', 'rocket league': 'Soccer with rocket cars',
+      'among us': 'Social deduction party game', 'pubg': 'Realistic battle royale',
+      'destiny': 'Looter shooter MMO', 'overwatch': 'Team-based hero FPS',
+      'league': 'MOBA competitive gaming', 'forza': 'Racing simulation',
+      'nfs': 'Arcade racing game', 'tekken': 'Fighting game',
+      'mortal kombat': 'Fighting game with fatalities', 'hogwarts': 'Harry Potter open-world RPG',
+      'diablo': 'Hack and slash RPG', 'genshin': 'Open-world anime RPG',
+      'palworld': 'Creature-collecting survival', 'helldivers': 'Co-op top-down shooter',
+      'silent hill': 'Psychological horror', 'resident evil': 'Survival horror',
+      'dead by daylight': '4v1 horror survival', 'outlast': 'First-person horror',
+      'sifu': 'Martial arts action', 'doom': 'Fast-paced demon-slaying FPS'
+    };
+
+    function getGameImage(title) {
+      const t = title.toLowerCase();
+      for (const [key, val] of Object.entries(gameImages)) { if (t.includes(key)) return val; }
+      return gameImages['default'];
+    }
+
+    function getGameDesc(title) {
+      const t = title.toLowerCase();
+      for (const [key, val] of Object.entries(gameDescs)) { if (t.includes(key)) return val; }
+      return '';
+    }
+
+    if (!code || !/^\d{6}$/.test(code)) { nf.style.display = 'block'; }
+    else { load(); }
+
+    function load() {
+      let p = getProfile(code);
+      if (!p) {
+        p = { code, name: 'Unknown Player', games: [], ip: null, settings: { ipLock: false }, bio: {}, createdAt: new Date().toISOString() };
+        saveProfile(code, p);
+        showSetup(p);
+      } else if (p.name === 'Unknown Player') {
+        showSetup(p);
+      } else {
+        render(p);
+      }
+    }
+
+    function showSetup(p) {
+      root.insertAdjacentHTML('beforeend',
+        '<div class="setup-card">' +
+        '<h2>Welcome!</h2>' +
+        '<div class="sub">Set up your profile to continue</div>' +
+        '<div class="form-group" style="--i:3"><label>Your Name</label><input type="text" id="sName" placeholder="What should we call you?"></div>' +
+        '<div class="form-group" style="--i:4"><label>Age</label><input type="text" id="sAge" placeholder="How old are you?"></div>' +
+        '<div class="form-group" style="--i:5"><label>Favorite Game</label><input type="text" id="sFav" placeholder="What do you play?"></div>' +
+        '<div class="form-group" style="--i:6"><label>Discord</label><input type="text" id="sDisc" placeholder="Your discord (optional)"></div>' +
+        '<button class="submit-btn" onclick="finishSetup()">Continue</button>' +
+        '</div>'
+      );
+      window._setupProfile = p;
+      setTimeout(() => document.getElementById('sName').focus(), 300);
+    }
+
+    function finishSetup() {
+      const name = document.getElementById('sName').value.trim();
+      if (!name) {
+        document.getElementById('sName').style.borderColor = '#ef4444';
+        document.getElementById('sName').style.animation = 'shake 0.5s ease';
+        setTimeout(() => { document.getElementById('sName').style.animation = ''; }, 500);
+        return;
+      }
+      const p = window._setupProfile;
+      p.name = name;
+      p.bio = { age: document.getElementById('sAge').value.trim(), favGame: document.getElementById('sFav').value.trim(), discord: document.getElementById('sDisc').value.trim() };
+      saveProfile(code, p);
+      document.querySelector('.container').innerHTML = '';
+      nf.style.display = 'none';
+      render(p);
+    }
+
+    function render(p) {
+      const ini = p.name ? p.name[0].toUpperCase() : '?';
+      const games = p.games || [];
+      let ghtml;
+      if (games.length === 0) {
+        ghtml = '<div class="no-games"><p>No games yet</p><small>Ask for games to be added</small></div>';
+      } else {
+        ghtml = games.map((g, i) =>
+          '<div class="game" style="--i:' + i + '"><div class="game-img" style="background-image:url(' + getGameImage(g.title) + ')"></div><div class="game-body"><h4>' + esc(g.title) + '</h4><div class="desc">' + getGameDesc(g.title) + '</div><div class="unowned">Unowned</div></div></div>'
+        ).join('');
+      }
+      root.insertAdjacentHTML('beforeend',
+        '<div class="header"><div class="avatar">' + ini + '</div><div class="info"><h2>' + esc(p.name) + '</h2><div class="code">' + p.code + '</div><div class="date">Member since ' + new Date(p.createdAt).toLocaleDateString() + '</div></div></div>' +
+        '<div class="section"><h3>My Games (' + games.length + ')</h3><div class="games">' + ghtml + '</div></div>' +
+        '<div class="section settings"><h3>Settings</h3>' +
+        '<div class="setting-row" style="--i:1"><span>IP Lock: ' + (p.settings.ipLock ? 'On' : 'Off') + '</span><button onclick="toggleLock()">' + (p.settings.ipLock ? 'Disable' : 'Enable') + '</button></div>' +
+        '<button class="save-btn" onclick="save()">Save Settings</button></div>'
+      );
+      window._p = p;
+    }
+
+    function toggleLock() {
+      const p = window._p;
+      p.settings.ipLock = !p.settings.ipLock;
+      saveProfile(code, p);
+      document.querySelector('.container').innerHTML = '';
+      nf.style.display = 'none';
+      render(p);
+    }
+
+    function save() { saveProfile(code, window._p); }
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  </script>
+</body>
+</html>
